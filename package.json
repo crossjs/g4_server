@@ -1,0 +1,50 @@
+{
+  "name": "g4",
+  "version": "1.0.0",
+  "description": "api server for g4",
+  "private": true,
+  "egg": {
+    "typescript": true
+  },
+  "scripts": {
+    "start": "egg-scripts start --daemon --port=7014 --title=egg-server-box --env prod",
+    "start:test": "egg-scripts start --daemon --port=7014 --title=egg-server-box --env test",
+    "stop": "egg-scripts stop --port=7014 --title=egg-server-box",
+    "dev": "egg-bin dev --port=7014 -r egg-ts-helper/register",
+    "debug": "egg-bin debug --port=7014 -r egg-ts-helper/register",
+    "tsc": "ets && tsc -p tsconfig.json",
+    "lint": "tslint . --fix",
+    "clean": "ets clean",
+    "db": "mongod --dbpath ../data/db",
+    "dump": "mongodump --out ../data/db-backup/",
+    "kill-db": "kill -9 $(lsof -i:27017 |grep 'mongod'|aw '{print $2}')",
+    "redis-local": "redis-server /usr/local/etc/redis-g4.conf",
+    "redis": "redis-server /etc/redis/redis-g4.conf",
+    "go": "concurrently \"npm:db\" \"npm:redis-local\" \"npm:dev\""
+  },
+  "dependencies": {
+    "egg": "^2.14.2",
+    "egg-mongoose": "^3.1.1",
+    "egg-redis": "^2.3.0",
+    "egg-userrole": "^2.1.0",
+    "lodash": "^4.17.11",
+    "moment": "^2.23.0",
+    "utility": "^1.15.0"
+  },
+  "devDependencies": {
+    "@types/ioredis": "^4.0.4",
+    "@types/lodash": "^4.14.119",
+    "@types/mongoose": "^5.3.5",
+    "@types/node": "^10.12.18",
+    "cross-port-killer": "^1.0.1",
+    "egg-bin": "^4.9.0",
+    "egg-scripts": "^2.11.0",
+    "egg-ts-helper": "^1.19.2",
+    "tslib": "^1.9.3",
+    "tslint": "^5.12.0",
+    "typescript": "^3.2.2"
+  },
+  "engines": {
+    "node": ">=8.9.0"
+  }
+}
