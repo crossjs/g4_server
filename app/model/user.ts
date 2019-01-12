@@ -30,6 +30,22 @@ export default (app: Application) => {
     nickname: {
       type: String,
     },
+    gender: {
+      type: Number,
+      default: 0,
+    },
+    country: {
+      type: String,
+    },
+    province: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    language: {
+      type: String,
+    },
     avatar: {
       type: String,
     },
@@ -37,7 +53,37 @@ export default (app: Application) => {
       type: Number,
       default: 0,
     },
-    point: {
+    points: {
+      type: Number,
+      default: 0,
+    },
+    // 以下 PVE
+    score: { // 最好分数
+      type: Number,
+      default: 0,
+    },
+    level: { // 最高难度
+      type: Number,
+      default: 0,
+    },
+    combo: { // 最大连击
+      type: Number,
+      default: 0,
+    },
+    scores: { // 累计获得分数
+      type: Number,
+      default: 0,
+    },
+    played: { // 累计完成局数
+      type: Number,
+      default: 0,
+    },
+    // 以下 PVP
+    won: { // 累计获胜局数
+      type: Number,
+      default: 0,
+    },
+    lost: { // 累计失败局数
       type: Number,
       default: 0,
     },

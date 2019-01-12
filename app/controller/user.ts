@@ -6,7 +6,16 @@ export default class UserController extends Controller {
     const { ctx, app, config } = this;
     const { body } = ctx.request;
 
-    const { code, nickname, avatar } = body;
+    const {
+      code,
+      nickName: nickname,
+      avatarUrl: avatar,
+      country,
+      province,
+      city,
+      gender,
+      language,
+     } = body;
 
     const { openId, unionId } = await ctx.service.weixin.code2Session(code);
 
@@ -21,6 +30,11 @@ export default class UserController extends Controller {
       Object.assign(weixinData, {
         nickname,
         avatar,
+        country,
+        province,
+        city,
+        gender,
+        language,
       });
     }
 
@@ -51,13 +65,47 @@ export default class UserController extends Controller {
     ctx.body = await ctx.service.user.endow(userId, ctx.request.body);
   }
 
+  /**
+   * score, level, ...
+   */
+  public async pbl() {
+    const { ctx } = this;
+    const userId = await ctx.service.user.getCurrentUserId();
+    const {
+      score, level, combo, scores, played,
+    } = await ctx.service.user.find(userId);
+    ctx.body = {
+      score,
+      level,
+      combo,
+      scores,
+      played,
+    };
+  }
+
   public async score() {
     const { ctx } = this;
-    const { score } = ctx.request.body;
-    ctx.body = await ctx.service.score.create({
-      score: ctx.helper.parseInt(score),
-      userId: await ctx.service.user.getCurrentUserId(),
-    });
+    const score = ctx.helper.parseInt(ctx.request.body.score);
+    const level = ctx.helper.parseInt(ctx.request.body.level);
+    const combo = ctx.helper.parseInt(ctx.request.body.combo);
+    const user = await ctx.service.user.findByAuthorization();
+    const data = {
+      $inc: {
+        scores: score,
+        played: 1,
+      },
+    };
+    if (score > user.score) {
+      Object.assign(data, { score });
+    }
+    if (level > user.level) {
+      Object.assign(data, { level });
+    }
+    if (combo > user.combo) {
+      Object.assign(data, { combo });
+    }
+    ctx.body = await ctx.service.user.update(user.id, data);
+    // ctx.status = 204;
   }
 
   public async whoami() {

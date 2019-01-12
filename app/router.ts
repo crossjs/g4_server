@@ -16,5 +16,6 @@ export default (app: Application) => {
   router.post('/api/user/endow', user, controller.user.endow);
 
   // 榜单
+  router.get('/api/user/pbl', user, controller.user.pbl);
   router.post('/api/user/score', user, controller.user.score);
 };
