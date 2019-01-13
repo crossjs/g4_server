@@ -74,12 +74,14 @@ export default class UserController extends Controller {
     const {
       score, level, combo, scores, played,
     } = await ctx.service.user.find(userId);
+    const [sum = { balance: 0 }] = await ctx.service.balance.sumByUserId(userId);
     ctx.body = {
       score,
       level,
       combo,
       scores,
       played,
+      balance: sum.balance,
     };
   }
 
@@ -104,8 +106,19 @@ export default class UserController extends Controller {
     if (combo > user.combo) {
       Object.assign(data, { combo });
     }
-    ctx.body = await ctx.service.user.update(user.id, data);
-    // ctx.status = 204;
+    ctx.service.user.update(user.id, data);
+    ctx.status = 204;
+  }
+
+  public async redpack() {
+    const { ctx } = this;
+    const amount = ctx.helper.parseFloat(ctx.request.body.amount);
+    const userId = await ctx.service.user.getCurrentUserId();
+    ctx.body = await ctx.service.balance.create({
+      amount,
+      userId,
+    });
+    ctx.status = 201;
   }
 
   public async whoami() {

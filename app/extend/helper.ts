@@ -11,6 +11,16 @@ export default {
     return parseInt(string, 10) || 0;
   },
 
+  parseFloat(string: any) {
+    if (typeof string === 'number') {
+      return string;
+    }
+    if (!string) {
+      return string;
+    }
+    return parseFloat(string) || 0;
+  },
+
   parseBool(bool: any) {
     if (typeof bool === 'boolean') {
       return bool;

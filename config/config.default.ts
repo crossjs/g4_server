@@ -14,8 +14,11 @@ export default (appInfo: EggAppInfo) => {
 
   config.weixin = {
     origin: 'https://api.weixin.qq.com',
-    appId: 'wxfababee3255ad64b',
-    secretKey: 'eb73e7258167af8993a105152ea6eeef',
+    // appId: 'wxfababee3255ad64b',
+    // secretKey: 'eb73e7258167af8993a105152ea6eeef',
+    // 借用 G2
+    appId: 'wx2d01e63038198832',
+    secretKey: '723e17827c72e86f22c1107f938068fb',
   };
 
   // 登录缓存 24 小时

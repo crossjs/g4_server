@@ -18,4 +18,5 @@ export default (app: Application) => {
   // 榜单
   router.get('/api/user/pbl', user, controller.user.pbl);
   router.post('/api/user/score', user, controller.user.score);
+  router.post('/api/user/redpack', user, controller.user.redpack);
 };
