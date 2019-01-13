@@ -7,9 +7,9 @@
     "typescript": true
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --port=7014 --title=egg-server-box --env prod",
-    "start:test": "egg-scripts start --daemon --port=7014 --title=egg-server-box --env test",
-    "stop": "egg-scripts stop --port=7014 --title=egg-server-box",
+    "start": "egg-scripts start --daemon --port=7014 --title=egg-server-g4 --env prod",
+    "start:test": "egg-scripts start --daemon --port=7014 --title=egg-server-g4 --env test",
+    "stop": "egg-scripts stop --port=7014 --title=egg-server-g4",
     "dev": "egg-bin dev --port=7014 -r egg-ts-helper/register",
     "debug": "egg-bin debug --port=7014 -r egg-ts-helper/register",
     "tsc": "ets && tsc -p tsconfig.json",
