@@ -8,7 +8,7 @@ export default class Wechat extends Service {
   public async code2Session(code: string) {
     const url = `{origin}/sns/jscode2session?grant_type=authorization_code&js_code=${code}&appid={appId}&secret={secretKey}`;
 
-    const { errcode, openid, unionid } = await this.json(url);
+    const { errcode, openid, unionid, session_key } = await this.json(url);
     if (errcode) {
       // -1 系统繁忙，此时请开发者稍候再试
       // 40029 code 无效
@@ -20,6 +20,7 @@ export default class Wechat extends Service {
     return {
       openId: openid,
       unionId: unionid,
+      sessionKey: session_key,
     };
   }
 

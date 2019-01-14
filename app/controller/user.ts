@@ -1,4 +1,5 @@
 import { Controller } from 'egg';
+import WXBizDataCrypt from '../utils/WXBizDataCrypt';
 
 export default class UserController extends Controller {
   // 直接使用 code
@@ -8,6 +9,27 @@ export default class UserController extends Controller {
 
     const {
       code,
+      encryptedData,
+      iv,
+      userInfo = {},
+     } = body;
+
+    const session = await ctx.service.weixin.code2Session(code);
+    let { openId, unionId } = session;
+
+    // 没取到 unionId，则从数据解密
+    if (!(openId && unionId)) {
+      if (encryptedData && iv) {
+        const decryptedData = new WXBizDataCrypt(config.weixin.appId, session.sessionKey).decryptData(encryptedData , iv);
+        if (decryptedData) {
+          openId = decryptedData.openId;
+          unionId = decryptedData.unionId;
+          Object.assign(userInfo, decryptedData);
+        }
+      }
+    }
+
+    const {
       nickName: nickname,
       avatarUrl: avatar,
       country,
@@ -15,9 +37,7 @@ export default class UserController extends Controller {
       city,
       gender,
       language,
-     } = body;
-
-    const { openId, unionId } = await ctx.service.weixin.code2Session(code);
+    } = userInfo;
 
     const weixinData = {
       provider: 'weixin',

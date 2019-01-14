@@ -21,8 +21,8 @@ export default (appInfo: EggAppInfo) => {
     secretKey: '723e17827c72e86f22c1107f938068fb',
   };
 
-  // 登录缓存 24 小时
-  config.accessTokenExpiresIn = 1000 * 60 * 60 * 24;
+  // 登录缓存 1 小时
+  config.accessTokenExpiresIn = 1000 * 60 * 60 * 1;
 
   // 上传文件目录
   config.uploadFilePrefix = '/file/';
