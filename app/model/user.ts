@@ -9,7 +9,7 @@ export default (app: Application) => {
     provider: {
       type: String,
     },
-    providerId: {
+    openId: {
       type: String,
     },
     unionId: {
@@ -113,7 +113,7 @@ export default (app: Application) => {
   UserSchema.index({ username: 1 }, { unique: true, sparse: true });
   UserSchema.index({ email: 1 }, { unique: true, sparse: true });
   UserSchema.index({ mobile: 1 }, { unique: true, sparse: true });
-  UserSchema.index({ providerId: 1, provider: 1 }, { unique: true, sparse: true });
+  UserSchema.index({ openId: 1, provider: 1 }, { unique: true, sparse: true });
   UserSchema.index({ accessToken: 1 });
 
   UserSchema.virtual('avatarUrl').get(function () {

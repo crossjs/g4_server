@@ -5,6 +5,8 @@ module.exports = (app) => {
   });
   app.role.failureHandler = function (ctx, action) {
     ctx.status = (action === 'user' || !ctx.user || !ctx.user._id) ? 401 : 403;
-    ctx.body = `role ${action} is required!`;
+    ctx.body = {
+      message: `role ${action} is required!`
+    };
   };
 };

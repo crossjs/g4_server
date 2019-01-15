@@ -25,13 +25,9 @@ export default class User extends Service {
   }
 
   // 获取指定用户
-  // openId === providerId
   public async queryByOpenIds(openIds: string[]) {
     const items = await this.ctx.model.User.find({
-      // appId: {
-      //   $all: appIds,
-      // },
-      providerId: {
+      openId: {
         $in: openIds,
       },
     }).exec();
@@ -73,8 +69,8 @@ export default class User extends Service {
   }
 
   // 获取指定用户
-  public async findByProviderId(providerId: string, provider = 'github') {
-    const query = { providerId, provider };
+  public async findByOpenId(openId: string, provider = 'github') {
+    const query = { openId, provider };
     return this.findOneByQuery(query);
   }
 

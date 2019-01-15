@@ -38,28 +38,29 @@ export default class UserController extends Controller {
       city,
       gender,
       language,
-      openId: providerId,
+      openId,
       unionId,
+      provider = 'weixin',
     } = userInfo;
 
-    if (!providerId) {
+    if (!openId) {
       throw new Error('需要 openId');
     }
 
-    const weixinData = {
-      provider: 'weixin',
-      providerId,
-      username: `${providerId}@weixin`,
+    const userData = {
+      provider,
+      openId,
+      username: `${openId}@${provider}`,
     };
 
     if (unionId) {
-      Object.assign(weixinData, {
+      Object.assign(userData, {
         unionId,
       });
     }
 
     if (nickname) {
-      Object.assign(weixinData, {
+      Object.assign(userData, {
         nickname,
         avatar,
         country,
@@ -70,11 +71,11 @@ export default class UserController extends Controller {
       });
     }
 
-    const _user = await ctx.service.user.findByProviderId(providerId, 'weixin');
+    const _user = await ctx.service.user.findByOpenId(openId, provider);
 
     const user = _user ?
-      await ctx.service.user.update(_user.id, weixinData) :
-      await ctx.service.user.create(weixinData);
+      await ctx.service.user.update(_user.id, userData) :
+      await ctx.service.user.create(userData);
 
     // 缓存 24 小时
     await app.redis.set(
