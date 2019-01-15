@@ -26,10 +26,10 @@ export default class WXBizDataCrypt {
       decoded = JSON.parse(decoded);
 
       if (decoded.watermark.appid !== this.appId) {
-        throw new Error('Illegal Buffer1');
+        throw new Error('Illegal Buffer');
       }
     } catch (err) {
-      throw new Error('Illegal Buffer2');
+      throw new Error('Illegal Buffer');
     }
     return decoded;
   }

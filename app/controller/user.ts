@@ -5,26 +5,27 @@ export default class UserController extends Controller {
   // 直接使用 code
   public async login() {
     const { ctx, app, config } = this;
-    const { body } = ctx.request;
 
     const {
       code,
       encryptedData,
       iv,
       userInfo = {},
-     } = body;
+    } = ctx.request.body;
 
-    const session = await ctx.service.weixin.code2Session(code);
-    let { openId, unionId } = session;
+    // 可能登录还未失效
+    if (code) {
+      const session = await ctx.service.weixin.code2Session(code);
+      const { sessionKey, ...restFromSession } = session;
+      Object.assign(userInfo, restFromSession);
 
-    // 没取到 unionId，则从数据解密
-    if (!(openId && unionId)) {
-      if (encryptedData && iv) {
-        const decryptedData = new WXBizDataCrypt(config.weixin.appId, session.sessionKey).decryptData(encryptedData , iv);
-        if (decryptedData) {
-          openId = decryptedData.openId;
-          unionId = decryptedData.unionId;
-          Object.assign(userInfo, decryptedData);
+      if (!restFromSession.unionId) {
+        // 没取到 unionId，则从数据解密
+        if (encryptedData && iv) {
+          const decryptedData = new WXBizDataCrypt(config.weixin.appId, sessionKey).decryptData(encryptedData, iv);
+          if (decryptedData) {
+            Object.assign(userInfo, decryptedData);
+          }
         }
       }
     }
@@ -37,16 +38,27 @@ export default class UserController extends Controller {
       city,
       gender,
       language,
+      openId: providerId,
+      unionId,
     } = userInfo;
+
+    if (!providerId) {
+      throw new Error('需要 openId');
+    }
 
     const weixinData = {
       provider: 'weixin',
-      providerId: openId,
-      unionId,
-      username: `${openId}@weixin`,
+      providerId,
+      username: `${providerId}@weixin`,
     };
 
-    if (nickname || avatar) {
+    if (unionId) {
+      Object.assign(weixinData, {
+        unionId,
+      });
+    }
+
+    if (nickname) {
       Object.assign(weixinData, {
         nickname,
         avatar,
@@ -58,7 +70,7 @@ export default class UserController extends Controller {
       });
     }
 
-    const _user = await ctx.service.user.findByProviderId(openId, 'weixin');
+    const _user = await ctx.service.user.findByProviderId(providerId, 'weixin');
 
     const user = _user ?
       await ctx.service.user.update(_user.id, weixinData) :
