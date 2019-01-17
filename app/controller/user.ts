@@ -87,16 +87,18 @@ export default class UserController extends Controller {
       config.accessTokenExpiresIn,
     );
 
-    // 验证通过
-    await this.findById(user.id);
+    ctx.body = {
+      ...JSON.parse(JSON.stringify(user)),
+      expiresIn: config.accessTokenExpiresIn,
+    };
     ctx.status = 201;
   }
 
-  public async endow() {
-    const { ctx } = this;
-    const userId = await ctx.service.user.getCurrentUserId();
-    ctx.body = await ctx.service.user.endow(userId, ctx.request.body);
-  }
+  // public async endow() {
+  //   const { ctx } = this;
+  //   const userId = await ctx.service.user.getCurrentUserId();
+  //   ctx.body = await ctx.service.user.endow(userId, ctx.request.body);
+  // }
 
   /**
    * score, level, ...
@@ -152,36 +154,5 @@ export default class UserController extends Controller {
       userId,
     });
     ctx.status = 201;
-  }
-
-  public async whoami() {
-    const { ctx } = this;
-    const userId = await ctx.service.user.getCurrentUserId();
-    await this.findById(userId);
-  }
-
-  // 详情
-  public async show() {
-    const { ctx } = this;
-    const { id } = ctx.params;
-    await this.findById(id);
-  }
-
-  // 查询
-  public async query() {
-    const { ctx } = this;
-    const { ids } = ctx.request.query;
-    ctx.body = await ctx.service.user.query(ids.split(','), '-accessToken -password -salt');
-  }
-
-  private async findById(id: string) {
-    const { ctx } = this;
-    const user = await ctx.service.user.find(id, '-password -salt');
-    if (!user) {
-      ctx.status = 404;
-      ctx.body = '用户不存在';
-      return;
-    }
-    ctx.body = user;
   }
 }
