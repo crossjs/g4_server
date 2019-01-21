@@ -59,7 +59,7 @@ export default class User extends Service {
   }
 
   // 更新指定用户的积分、金币等等
-  public async endow(id: string, $inc: UserData) {
+  public async award(id: string, $inc: UserData) {
     return this.ctx.model.User.findByIdAndUpdate(id, { $inc }, { new: true }).exec();
   }
 

@@ -94,65 +94,84 @@ export default class UserController extends Controller {
     ctx.status = 201;
   }
 
-  // public async endow() {
-  //   const { ctx } = this;
-  //   const userId = await ctx.service.user.getCurrentUserId();
-  //   ctx.body = await ctx.service.user.endow(userId, ctx.request.body);
-  // }
+  /**
+   * coins, points, ...
+   */
+  public async award() {
+    const { ctx } = this;
+    let { coins, points } = ctx.request.body;
+    const userId = await ctx.service.user.getCurrentUserId();
+
+    if (coins) {
+      coins = ctx.helper.parseInt(coins);
+    }
+    if (points) {
+      points = ctx.helper.parseInt(points);
+    }
+
+    const payload = {};
+
+    if (coins) {
+      ctx.service.userLog.create({
+        userId,
+        target: 'coins',
+        amount: coins,
+      });
+      Object.assign(payload, { coins });
+    }
+    if (points) {
+      ctx.service.userLog.create({
+        userId,
+        target: 'points',
+        amount: points,
+      });
+      Object.assign(payload, { points });
+    }
+
+    ctx.service.user.award(userId, payload);
+    ctx.status = 204;
+  }
 
   /**
    * score, level, ...
    */
-  public async pbl() {
+  public async getPbl() {
     const { ctx } = this;
     const userId = await ctx.service.user.getCurrentUserId();
-    const {
-      score, level, combo, scores, played,
-    } = await ctx.service.user.find(userId);
-    const [sum = { balance: 0 }] = await ctx.service.balance.sumByUserId(userId);
-    ctx.body = {
-      score,
-      level,
-      combo,
-      scores,
-      played,
-      balance: sum.balance,
-    };
+    ctx.body = this.getPblDataFromRes(await ctx.service.user.find(userId));
   }
 
-  public async score() {
+  public async setPbl() {
     const { ctx } = this;
     const score = ctx.helper.parseInt(ctx.request.body.score);
     const level = ctx.helper.parseInt(ctx.request.body.level);
     const combo = ctx.helper.parseInt(ctx.request.body.combo);
     const user = await ctx.service.user.findByAuthorization();
-    const data = {
+    const payload = {
       $inc: {
         scores: score,
         played: 1,
       },
     };
     if (score > user.score) {
-      Object.assign(data, { score });
+      Object.assign(payload, { score });
     }
     if (level > user.level) {
-      Object.assign(data, { level });
+      Object.assign(payload, { level });
     }
     if (combo > user.combo) {
-      Object.assign(data, { combo });
+      Object.assign(payload, { combo });
     }
-    ctx.service.user.update(user.id, data);
+    ctx.body = this.getPblDataFromRes(await ctx.service.user.update(user.id, payload));
     ctx.status = 204;
   }
 
-  public async redpack() {
-    const { ctx } = this;
-    const amount = ctx.helper.parseFloat(ctx.request.body.amount);
-    const userId = await ctx.service.user.getCurrentUserId();
-    ctx.body = await ctx.service.balance.create({
-      amount,
-      userId,
-    });
-    ctx.status = 201;
+  private getPblDataFromRes(res: any) {
+    const {
+      score, level, combo, scores, played, coins, points,
+    } = res;
+    return {
+      score, level, combo, scores, played, coins, points,
+    };
   }
 }

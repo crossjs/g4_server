@@ -2,12 +2,12 @@
 // Do not modify this file!!!!!!!!!
 
 import 'egg';
-import ExportBalance from '../../../app/model/balance';
+import ExportUserLog from '../../../app/model/user-log';
 import ExportUser from '../../../app/model/user';
 
 declare module 'egg' {
   interface IModel {
-    Balance: ReturnType<typeof ExportBalance>;
+    UserLog: ReturnType<typeof ExportUserLog>;
     User: ReturnType<typeof ExportUser>;
   }
 }
