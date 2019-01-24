@@ -100,7 +100,6 @@ export default class UserController extends Controller {
   public async award() {
     const { ctx } = this;
     let { coins, points } = ctx.request.body;
-    const userId = await ctx.service.user.getCurrentUserId();
 
     if (coins) {
       coins = ctx.helper.parseInt(coins);
@@ -109,27 +108,36 @@ export default class UserController extends Controller {
       points = ctx.helper.parseInt(points);
     }
 
+    const user = await ctx.service.user.findByAuthorization(true);
     const payload = {};
 
     if (coins) {
       ctx.service.userLog.create({
-        userId,
+        userId: user.id,
         target: 'coins',
         amount: coins,
       });
-      Object.assign(payload, { coins });
+      if (user.coins + coins >= 0) {
+        Object.assign(payload, { coins });
+      } else {
+        throw new Error('金币余额不足');
+      }
     }
     if (points) {
       ctx.service.userLog.create({
-        userId,
+        userId: user.id,
         target: 'points',
         amount: points,
       });
-      Object.assign(payload, { points });
+      if (user.points + points >= 0) {
+        Object.assign(payload, { points });
+      } else {
+        throw new Error('积分余额不足');
+      }
     }
 
-    ctx.service.user.award(userId, payload);
-    ctx.status = 204;
+    ctx.body = await ctx.service.user.award(user.id, payload);
+    // ctx.status = 204;
   }
 
   /**
@@ -137,8 +145,8 @@ export default class UserController extends Controller {
    */
   public async getPbl() {
     const { ctx } = this;
-    const userId = await ctx.service.user.getCurrentUserId();
-    ctx.body = this.getPblDataFromRes(await ctx.service.user.find(userId));
+    const user = await ctx.service.user.findByAuthorization(true);
+    ctx.body = this.getPblDataFromRes(user);
   }
 
   public async setPbl() {
@@ -146,7 +154,7 @@ export default class UserController extends Controller {
     const score = ctx.helper.parseInt(ctx.request.body.score);
     const level = ctx.helper.parseInt(ctx.request.body.level);
     const combo = ctx.helper.parseInt(ctx.request.body.combo);
-    const user = await ctx.service.user.findByAuthorization();
+    const user = await ctx.service.user.findByAuthorization(true);
     const payload = {
       $inc: {
         scores: score,

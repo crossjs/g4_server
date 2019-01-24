@@ -81,17 +81,19 @@ export default class User extends Service {
   }
 
   // 根据鉴权头获取
-  public async findByAuthorization() {
+  public async findByAuthorization(forceLatest?: boolean) {
     const { ctx, app } = this;
     const token = ctx.get('Authorization');
     if (token) {
         const [type, accessToken] = token.split(' ');
         if (type === 'Bearer') {
           const _accessToken = accessToken.replace(/^"|"$/g, '');
-          // 去缓存找
-          const cachedUser = await app.redis.get(_accessToken);
-          if (cachedUser) {
-            return JSON.parse(cachedUser);
+          if (!forceLatest) {
+            // 去缓存找
+            const cachedUser = await app.redis.get(_accessToken);
+            if (cachedUser) {
+              return JSON.parse(cachedUser);
+            }
           }
           // 去数据库找
           const existsUser = await this.findByAccessToken(_accessToken);
