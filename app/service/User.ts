@@ -69,32 +69,32 @@ export default class User extends Service {
   }
 
   // 获取指定用户
-  public async findByOpenId(openId: string, provider = 'github') {
+  public async findByOpenId(openId: string, provider = 'weixin') {
     const query = { openId, provider };
-    return this.findOneByQuery(query);
+    return this.ctx.model.User.findOne(query).exec();
   }
 
   // 获取指定用户
   public async findByAccessToken(accessToken: string) {
     const query = { accessToken };
-    return this.findOneByQuery(query);
+    return this.ctx.model.User.findOne(query).exec();
   }
 
   // 根据鉴权头获取
-  public async findByAuthorization(forceLatest?: boolean) {
+  public async findByAuthorization() {
     const { ctx, app } = this;
     const token = ctx.get('Authorization');
     if (token) {
         const [type, accessToken] = token.split(' ');
         if (type === 'Bearer') {
           const _accessToken = accessToken.replace(/^"|"$/g, '');
-          if (!forceLatest) {
-            // 去缓存找
-            const cachedUser = await app.redis.get(_accessToken);
-            if (cachedUser) {
-              return JSON.parse(cachedUser);
-            }
+
+          // 去缓存找
+          const cachedUser = await app.redis.get(_accessToken);
+          if (cachedUser) {
+            return JSON.parse(cachedUser);
           }
+
           // 去数据库找
           const existsUser = await this.findByAccessToken(_accessToken);
 
@@ -102,30 +102,15 @@ export default class User extends Service {
           if (!existsUser) {
             return null;
           }
+
           // 用户未启用
           if (!existsUser.enabled) {
             return null;
           }
+
           return existsUser;
         }
     }
     return null;
-  }
-
-  public async getCurrentUserId() {
-    const userId = this.ctx.get('userId');
-    if (userId) {
-      return userId;
-    }
-    const existsUser = await this.findByAuthorization();
-    if (existsUser) {
-      return existsUser.id;
-    }
-    return null;
-  }
-
-  // 获取指定用户
-  private async findOneByQuery(query: any) {
-    return this.ctx.model.User.findOne(query).exec();
   }
 }

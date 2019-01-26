@@ -21,15 +21,14 @@ export default (appInfo: EggAppInfo) => {
     secretKey: '723e17827c72e86f22c1107f938068fb',
   };
 
-  // 登录缓存 24 小时
-  config.accessTokenExpiresIn = 1000 * 60 * 60 * 24;
+  // 登录缓存 0.5 小时
+  config.accessTokenExpiresIn = 1000 * 60 * 60 * 0.5;
 
   // 上传文件目录
   config.uploadFilePrefix = '/file/';
   // config.uploadFileDir = path.join(appInfo.baseDir, '../../box_server/file');
   config.uploadFileDir = path.join(appInfo.baseDir, 'file');
 
-  // override config from framework / plugin
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1534359818280_2334';
 

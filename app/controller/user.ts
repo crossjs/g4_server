@@ -108,7 +108,8 @@ export default class UserController extends Controller {
       points = ctx.helper.parseInt(points);
     }
 
-    const user = await ctx.service.user.findByAuthorization(true);
+    // 确保最新
+    const user = await ctx.service.user.find(ctx.user.id);
     const payload = {};
 
     if (coins) {
@@ -137,7 +138,6 @@ export default class UserController extends Controller {
     }
 
     ctx.body = await ctx.service.user.award(user.id, payload);
-    // ctx.status = 204;
   }
 
   /**
@@ -145,7 +145,8 @@ export default class UserController extends Controller {
    */
   public async getPbl() {
     const { ctx } = this;
-    const user = await ctx.service.user.findByAuthorization(true);
+    // 确保最新
+    const user = await ctx.service.user.find(ctx.user.id);
     ctx.body = this.getPblDataFromRes(user);
   }
 
@@ -154,7 +155,8 @@ export default class UserController extends Controller {
     const score = ctx.helper.parseInt(ctx.request.body.score);
     const level = ctx.helper.parseInt(ctx.request.body.level);
     const combo = ctx.helper.parseInt(ctx.request.body.combo);
-    const user = await ctx.service.user.findByAuthorization(true);
+    // 确保最新
+    const user = await ctx.service.user.find(ctx.user.id);
     const payload = {
       $inc: {
         scores: score,
