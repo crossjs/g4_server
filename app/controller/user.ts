@@ -1,5 +1,5 @@
-import { Controller } from 'egg';
-import WXBizDataCrypt from '../utils/WXBizDataCrypt';
+import { Controller } from "egg";
+import WXBizDataCrypt from "../utils/WXBizDataCrypt";
 
 export default class UserController extends Controller {
   // 直接使用 code
@@ -40,11 +40,11 @@ export default class UserController extends Controller {
       language,
       openId,
       unionId,
-      provider = 'weixin',
+      provider = "weixin",
     } = userInfo;
 
     if (!openId) {
-      throw new Error('需要 openId');
+      throw new Error("需要 openId");
     }
 
     const userData = {
@@ -83,7 +83,7 @@ export default class UserController extends Controller {
       JSON.stringify(user),
       // EX seconds -- Set the specified expire time, in seconds.
       // PX milliseconds -- Set the specified expire time, in milliseconds.
-      'PX',
+      "PX",
       config.accessTokenExpiresIn,
     );
 
@@ -115,25 +115,25 @@ export default class UserController extends Controller {
     if (coins) {
       ctx.service.userLog.create({
         userId: user.id,
-        target: 'coins',
+        target: "coins",
         amount: coins,
       });
       if (user.coins + coins >= 0) {
         Object.assign(payload, { coins });
       } else {
-        throw new Error('金币余额不足');
+        throw new Error("金币余额不足");
       }
     }
     if (points) {
       ctx.service.userLog.create({
         userId: user.id,
-        target: 'points',
+        target: "points",
         amount: points,
       });
       if (user.points + points >= 0) {
         Object.assign(payload, { points });
       } else {
-        throw new Error('积分余额不足');
+        throw new Error("积分余额不足");
       }
     }
 

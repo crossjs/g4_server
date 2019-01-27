@@ -1,4 +1,4 @@
-import { Application } from 'egg';
+import { Application } from "egg";
 
 export default (app: Application) => {
   const { mongoose, g4 } = app;
@@ -24,5 +24,5 @@ export default (app: Application) => {
     timestamps: true,
   });
 
-  return g4.model('UserLog', UserLogSchema);
+  return g4.model("UserLog", UserLogSchema);
 };

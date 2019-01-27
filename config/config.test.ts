@@ -1,9 +1,9 @@
-import { DefaultConfig } from './config.default';
+import { DefaultConfig } from "./config.default";
 
 export default () => {
   const config: DefaultConfig = {};
 
-  config.env = 'prod';
+  config.env = "prod";
 
   // config.notfound = {
   //   pageUrl: '/404.html',

@@ -1,4 +1,4 @@
-import { Service } from 'egg';
+import { Service } from "egg";
 
 interface UserData {
   [key: string]: any;
@@ -69,7 +69,7 @@ export default class User extends Service {
   }
 
   // 获取指定用户
-  public async findByOpenId(openId: string, provider = 'weixin') {
+  public async findByOpenId(openId: string, provider = "weixin") {
     const query = { openId, provider };
     return this.ctx.model.User.findOne(query).exec();
   }
@@ -83,11 +83,11 @@ export default class User extends Service {
   // 根据鉴权头获取
   public async findByAuthorization() {
     const { ctx, app } = this;
-    const token = ctx.get('Authorization');
+    const token = ctx.get("Authorization");
     if (token) {
-        const [type, accessToken] = token.split(' ');
-        if (type === 'Bearer') {
-          const _accessToken = accessToken.replace(/^"|"$/g, '');
+        const [type, accessToken] = token.split(" ");
+        if (type === "Bearer") {
+          const _accessToken = accessToken.replace(/^"|"$/g, "");
 
           // 去缓存找
           const cachedUser = await app.redis.get(_accessToken);

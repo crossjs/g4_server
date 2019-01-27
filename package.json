@@ -13,7 +13,7 @@
     "dev": "egg-bin dev --port=7014 -r egg-ts-helper/register",
     "debug": "egg-bin debug --port=7014 -r egg-ts-helper/register",
     "tsc": "ets && tsc -p tsconfig.json",
-    "lint": "tslint . --fix",
+    "lint": "tslint -p ./ --fix",
     "clean": "ets clean",
     "db": "mongod --dbpath ../data/db",
     "dump": "mongodump --out ../data/db-backup/",

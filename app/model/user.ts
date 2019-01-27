@@ -1,5 +1,5 @@
-import { Application } from 'egg';
-import * as utility from 'utility';
+import { Application } from "egg";
+import * as utility from "utility";
 
 export default (app: Application) => {
   const { mongoose, g4 } = app;
@@ -116,7 +116,7 @@ export default (app: Application) => {
   UserSchema.index({ openId: 1, provider: 1 }, { unique: true, sparse: true });
   UserSchema.index({ accessToken: 1 });
 
-  UserSchema.virtual('avatarUrl').get(function () {
+  UserSchema.virtual("avatarUrl").get(function () {
     const { avatar, email } = this;
     if (avatar) {
       if (/^http/.test(avatar)) {
@@ -130,8 +130,8 @@ export default (app: Application) => {
       return `https://gravatar.com/avatar/${utility.md5(email.toLowerCase())}?size=96`;
     }
 
-    return '';
+    return "";
   });
 
-  return g4.model('User', UserSchema);
+  return g4.model("User", UserSchema);
 };

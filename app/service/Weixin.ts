@@ -1,4 +1,4 @@
-import { Service } from 'egg';
+import { Service } from "egg";
 
 /**
  * Wechat Service
@@ -14,8 +14,8 @@ export default class Wechat extends Service {
       // 40029 code 无效
       // 45011 频率限制，每个用户每分钟100次
       throw new Error(errcode === -1 ?
-        '系统繁忙, 请稍候再试' : errcode === 40029 ?
-        'code 无效' : errcode);
+        "系统繁忙, 请稍候再试" : errcode === 40029 ?
+        "code 无效" : errcode);
     }
     return {
       openId,
@@ -69,7 +69,7 @@ export default class Wechat extends Service {
     const { data } = await this.ctx.curl(
       replaceUrl(url, this.config.weixin),
       {
-        dataType: 'json',
+        dataType: "json",
         ...options,
       },
     );

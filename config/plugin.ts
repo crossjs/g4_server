@@ -1,17 +1,17 @@
-import { EggPlugin } from 'egg';
+import { EggPlugin } from "egg";
 
 const plugin: EggPlugin = {
   mongoose: {
     enable: true,
-    package: 'egg-mongoose',
+    package: "egg-mongoose",
   },
   redis: {
     enable: true,
-    package: 'egg-redis',
+    package: "egg-redis",
   },
   userrole: {
     enable: true,
-    package: 'egg-userrole',
+    package: "egg-userrole",
   },
 };
 

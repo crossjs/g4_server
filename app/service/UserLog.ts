@@ -1,4 +1,4 @@
-import { Service } from 'egg';
+import { Service } from "egg";
 
 interface UserLogData {
   userId: string;
@@ -7,7 +7,7 @@ interface UserLogData {
 }
 
 /**
- * User Service
+ * UserLog Service
  */
 export default class UserLog extends Service {
   // 创建用户日志

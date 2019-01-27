@@ -1,6 +1,6 @@
-import { Application as EggApplication } from 'egg';
+import { Application as EggApplication } from "egg";
 
-declare module 'egg' {
+declare module "egg" {
   interface Application {
     role: {
       can: Function;

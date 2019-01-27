@@ -3,8 +3,7 @@
   "rules": {
     "quotemark": [
       true,
-      "single",
-      "jsx-double"
+      "double"
     ],
     "no-console": [
       true,
@@ -48,5 +47,13 @@
       "allow-pascal-case"
     ],
     "align": [true, "statements"]
+  },
+  "linterOptions": {
+    "exclude": [
+      "file/**/*",
+      "logs/**/*",
+      "node_modules/**/*",
+      "run/**/*"
+    ]
   }
 }
