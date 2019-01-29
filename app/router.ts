@@ -8,6 +8,9 @@ export default (app: Application) => {
   // 系统配置
   router.get("/api/config", controller.config.index);
 
+  // 世界排行
+  router.get("/api/pbl", controller.pbl.all);
+
   // 登录
   router.post("/api/user/login", controller.user.login);
 

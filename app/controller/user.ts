@@ -146,8 +146,9 @@ export default class UserController extends Controller {
   public async getPbl() {
     const { ctx } = this;
     // 确保最新
-    const user = await ctx.service.user.find(ctx.user.id);
-    ctx.body = this.getPblDataFromRes(user);
+    ctx.body = this.getPblDataFromRes(await ctx.service.user.find(
+      ctx.user.id,
+    ));
   }
 
   public async setPbl() {

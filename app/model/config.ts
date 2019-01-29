@@ -5,6 +5,11 @@ export default (app: Application) => {
   const { Schema } = mongoose;
 
   const ConfigSchema = new Schema({
+    // 名称
+    name: {
+      type: String,
+      default: "",
+    },
     // 广告单元 ID
     adUnitId: {
       type: String,
@@ -50,6 +55,8 @@ export default (app: Application) => {
     },
     timestamps: true,
   });
+
+  ConfigSchema.index({ name: 1 }, { unique: true, sparse: true });
 
   return g4.model("Config", ConfigSchema);
 };
