@@ -13,7 +13,7 @@ export default class UserController extends Controller {
       userInfo = {},
     } = ctx.request.body;
 
-    // 可能登录还未失效
+    // 如果提供 code，那么就去微信服务端换 session
     if (code) {
       const session = await ctx.service.weixin.code2Session(code);
       const { sessionKey, ...restFromSession } = session;
