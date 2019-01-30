@@ -13,19 +13,17 @@ export default class UserController extends Controller {
       userInfo = {},
     } = ctx.request.body;
 
-    // 如果提供 code，那么就去微信服务端换 session
-    if (code) {
-      const session = await ctx.service.weixin.code2Session(code);
-      const { sessionKey, ...restFromSession } = session;
-      Object.assign(userInfo, restFromSession);
+    // 使用 code 去微信服务端换 session
+    const session = await ctx.service.weixin.code2Session(code);
+    const { sessionKey, ...sessionRest } = session;
+    Object.assign(userInfo, sessionRest);
 
-      if (!restFromSession.unionId) {
-        // 没取到 unionId，则从数据解密
-        if (encryptedData && iv) {
-          const decryptedData = new WXBizDataCrypt(config.weixin.appId, sessionKey).decryptData(encryptedData, iv);
-          if (decryptedData) {
-            Object.assign(userInfo, decryptedData);
-          }
+    if (!userInfo.unionId || !userInfo.openId) {
+      // 没取到 unionId || openId，则从数据解密
+      if (encryptedData && iv) {
+        const decryptedData = new WXBizDataCrypt(config.weixin.appId, sessionKey).decryptData(encryptedData, iv);
+        if (decryptedData) {
+          Object.assign(userInfo, decryptedData);
         }
       }
     }
