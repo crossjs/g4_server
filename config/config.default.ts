@@ -26,7 +26,6 @@ export default (appInfo: EggAppInfo) => {
 
   // 上传文件目录
   config.uploadFilePrefix = "/file/";
-  // config.uploadFileDir = path.join(appInfo.baseDir, '../../box_server/file');
   config.uploadFileDir = path.join(appInfo.baseDir, "file");
 
   // use for cookie sign key, should change to your own and keep security

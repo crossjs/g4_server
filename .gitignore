@@ -5,7 +5,6 @@ app/**/*.map
 test/**/*.map
 config/**/*.map
 
-file/
 node_modules/
 
 .idea/
