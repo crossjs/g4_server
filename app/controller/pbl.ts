@@ -9,7 +9,7 @@ export default class PblController extends Controller {
         nickname: {
           $ne: null,
         },
-       },
+      },
       ["openId", "avatar", "nickname", "score"],
     );
     ctx.body = items.map(({ openId, avatarUrl, nickname, score }) => ({ openId, avatarUrl, nickname, score }));
