@@ -38,6 +38,11 @@ export default (app: Application) => {
       enum: [0, 1, 2, 3],
       default: 0,
     },
+    // 交叉营销启用状态
+    boxEnabled: {
+      type: Boolean,
+      default: true,
+    },
     creator: {
       type: String,
       required: true,
