@@ -9,6 +9,9 @@ export default class PblController extends Controller {
         nickname: {
           $ne: null,
         },
+        score: {
+          $gt: 0,
+        },
       },
       ["openId", "avatar", "nickname", "score"],
     );

@@ -14,8 +14,12 @@ export default (app: Application) => {
   // 登录
   router.post("/api/user/login", controller.user.login);
 
-  // 积分
-  // 金币
+  // 数据存取
+  router.get("/api/db", user, controller.db.get);
+  router.post("/api/db", user, controller.db.set);
+  router.del("/api/db", user, controller.db.destroy);
+
+  // 积分、金币
   router.post("/api/user/award", user, controller.user.award);
 
   // 榜单
