@@ -29,6 +29,10 @@ export default (app: Application) => {
       type: String,
       required: true,
     },
+    order: {
+      type: Number,
+      default: 0,
+    },
     creator: {
       type: String,
       required: true,
