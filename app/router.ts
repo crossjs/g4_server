@@ -8,8 +8,11 @@ export default (app: Application) => {
   // 系统配置
   router.get("/api/config", controller.config.index);
 
+  // 每日任务
+  router.get("/api/tasks", controller.task.index);
+
   // 世界排行
-  router.get("/api/pbl", controller.pbl.all);
+  router.get("/api/pbl", controller.pbl.index);
 
   // 登录
   router.post("/api/user/login", controller.user.login);
@@ -22,7 +25,11 @@ export default (app: Application) => {
   // 积分、金币
   router.post("/api/user/award", user, controller.user.award);
 
-  // 榜单
+  // 个人游戏数据
   router.get("/api/user/pbl", user, controller.user.getPbl);
   router.post("/api/user/pbl", user, controller.user.setPbl);
+
+  // 用户任务记录
+  router.get("/api/user/tasks", user, controller.userTask.index);
+  router.post("/api/user/tasks/:id", user, controller.userTask.create);
 };

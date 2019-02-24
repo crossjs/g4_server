@@ -1,5 +1,8 @@
 import { Application } from "egg";
 
+/**
+ * 游戏配置
+ */
 export default (app: Application) => {
   const { mongoose, g4 } = app;
   const { Schema } = mongoose;

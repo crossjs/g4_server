@@ -1,24 +1,23 @@
 import { Application } from "egg";
 
 /**
- * 通用数据存取
+ * 玩家金币记录
  */
 export default (app: Application) => {
   const { mongoose, g4 } = app;
   const { Schema } = mongoose;
-  const { Types } = Schema;
 
-  const DbSchema = new Schema({
+  const UserLogSchema = new Schema({
     userId: {
       type: String,
       required: true,
     },
-    key: {
+    target: { // coins, points
       type: String,
       required: true,
     },
-    data: {
-      type: Types.Mixed,
+    amount: { // 正数为得到, 负数为消费
+      type: Number,
       required: true,
     },
   }, {
@@ -28,7 +27,5 @@ export default (app: Application) => {
     timestamps: true,
   });
 
-  DbSchema.index({ userId: 1, key: 1 }, { unique: true });
-
-  return g4.model("Db", DbSchema);
+  return g4.model("UserLog", UserLogSchema);
 };

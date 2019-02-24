@@ -16,7 +16,7 @@ export default class Db extends Service {
 
   // 更新配置
   public async update(id: string, data: any) {
-    return this.ctx.model.Db.findOneAndUpdate(id, { data }, { new: true }).exec();
+    return this.ctx.model.Db.findByIdAndUpdate(id, { data }, { new: true }).exec();
   }
 
   // 删除配置

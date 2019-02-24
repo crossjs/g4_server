@@ -1,6 +1,9 @@
 import { Application } from "egg";
 import * as utility from "utility";
 
+/**
+ * 玩家
+ */
 export default (app: Application) => {
   const { mongoose, g4 } = app;
   const { Schema } = mongoose;
