@@ -13,8 +13,13 @@ export default (app: Application) => {
       type: String,
       default: "",
     },
-    // 广告单元 ID
-    adUnitId: {
+    // Banner 广告单元 ID
+    bannerAd: {
+      type: String,
+      default: "",
+    },
+    // 视频广告单元 ID
+    rewardAd: {
       type: String,
       default: "",
     },
