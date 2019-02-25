@@ -40,6 +40,18 @@ export default (app: Application) => {
       enum: [0, 1, 2, 3],
       default: 0,
     },
+    // 签到补签领取方式：0 关闭 1 仅分享 2 仅视频 3 both
+    checkinReward: {
+      type: Number,
+      enum: [0, 1, 2, 3],
+      default: 0,
+    },
+    // 复活机会领取方式：0 关闭 1 仅分享 2 仅视频 3 both
+    reviveReward: {
+      type: Number,
+      enum: [0, 1, 2, 3],
+      default: 0,
+    },
     // 商店兑换物品：0 关闭 1 仅虚拟 2 仅实物 3 both
     shopStatus: {
       type: Number,
