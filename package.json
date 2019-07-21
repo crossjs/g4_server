@@ -20,6 +20,7 @@
     "kill-db": "kill -9 $(lsof -i:27017 |grep 'mongod'|aw '{print $2}')",
     "redis-local": "redis-server /usr/local/etc/redis-g4.conf",
     "redis": "sudo service redis_6384 start",
+    "scp": "sudo scp -i ../assets/minipx.key -r ubuntu@a.minipx.cn:~/bak/g4/users.json ./users.json",
     "go": "concurrently \"npm:db\" \"npm:redis-local\" \"npm:dev\""
   },
   "dependencies": {
